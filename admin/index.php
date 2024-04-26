@@ -6,24 +6,51 @@ if (!isset($_SESSION["username"])) {
 require_once ("../utils/databaseManager.php");
 include_once("../block/header.php");
 include_once("../block/navbar.php");
-$title = "Admin Panel";
+$title = "Page de l'administrateur";
 $errors = [];
+
+try {
+    $pdo = connectDB();
+    configPdo($pdo);
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    exit;
+}
+//Traitement suppression d'un article
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
+    $newsToDelete = $_POST["deleteByTitle"];
+    if (!empty($newsToDelete)) {
+        $deletedRows = deleteNews($pdo, $newsToDelete);
+        if ($deletedRows > 0) {
+            echo ("<p class='text-success text-center'>L'information a été supprimée avec succès. {$deletedRows} articles supprimés au total</p>");
+        } else {
+            echo ("<p class='text-danger text-center'>Je n'ai pas trouvé d'article avec ce titre.</p>");
+        }
+    } else {
+        echo ("<p class='text-danger text-center'>Le titre de la nouvelle ne peut pas être vide.</p>");
+    }
+}
 ?>
 
     <h1 class="text-center m-3"><?=$title?></h1>
-<a href="http://localhost:8888/dauphine/logout.php" class="btn btn-danger" style="position: fixed; top: 10px; right: 10px; z-index: 1500;">Log out</a>
+<a href="http://localhost:8888/dauphine/logout.php" class="btn btn-danger" style="position: fixed; top: 10px; right: 10px; z-index: 1500;">Déconnexion</a>
 
-    <div class="d-flex flex-column justify-content-center align-items-center">
-        <form class="text-center p-5 col-5" method="POST" action="login.php">
+    <h2 class="text-muted m-1 ms-5">Publier l'article</h2>
+    <div class="d-flex flex-column justify-content-center ms-5">
+        <form class="text-center p-1 col-6" method="POST" action="index.php">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control m-1" name="username" id="username" placeholder="user">
-                <label for="username">Username</label>
+                <input type="text" class="form-control m-1" name="titre" id="titre" placeholder="titre">
+                <label for="titre">Titre</label>
             </div>
-            <div class="form-floating">
-                <input type="password" class="form-control m-1" name="password" id="password" placeholder="password">
-                <label for="password">Password</label>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control m-1" name="auteur" id="auteur" placeholder="auteur">
+                <label for="auteur">Auteur</label>
             </div>
-            <input type="submit" class="btn btn-secondary m-1" value="Login">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control m-1" name="auteur" id="auteur" placeholder="auteur" style="height: 300px">
+                <label for="auteur">Texte</label>
+            </div>
+            <input type="submit" class="btn btn-secondary m-1 col-6" value="Publier">
             <?php
             if (isset($errors["global"])) {
                 echo ("<p class='text-danger'>" .
@@ -33,6 +60,24 @@ $errors = [];
         </form>
     </div>
 
+    <h2 class="text-muted m-1 ms-5">Supprimer l'article</h2>
+    <div class="d-flex flex-column justify-content-center ms-5">
+        <form class="text-center p-1 col-6" method="POST" action="index.php">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">
+                <label for="deleteByTitle">Titre</label>
+            </div>
+            <input type="submit" class="btn btn-secondary m-1 col-6" value="Supprimer">
+            <?php
+            if (isset($errors["global"])) {
+                echo ("<p class='text-danger'>" .
+                    $errors["global"] . "</p>");
+            }
+            ?>
+        </form>
+    </div>
+
+    <h2 class="text-muted m-1 ms-5">Modifier l'article</h2>
 
 <?php
 include_once("../block/footer.php");

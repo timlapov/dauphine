@@ -39,13 +39,13 @@ if (
     <form class="text-center p-5 col-5" method="POST" action="login.php">
         <div class="form-floating mb-3">
             <input type="text" class="form-control m-1" name="username" id="username" placeholder="user">
-            <label for="username">Username</label>
+            <label for="username">Nom</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control m-1" name="password" id="password" placeholder="password">
-            <label for="password">Password</label>
+            <input type="password" class="form-control m-1 mb-5" name="password" id="password" placeholder="password">
+            <label for="password">Mot de passe</label>
         </div>
-        <input type="submit" class="btn btn-secondary m-1" value="Login">
+        <input type="submit" class="btn btn-secondary m-1" value="Se connecter">
         <?php
         if (isset($errors["global"])) {
             echo ("<p class='text-danger'>" .

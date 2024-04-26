@@ -14,6 +14,18 @@ function configPdo(PDO $pdo) {
 }
 
 function getAllNews(PDO $pdo) {
-    $reponse = $pdo->query("SELECT * FROM annonce ORDER BY id DESC");
-    return $reponse->fetchAll();
+    $response = $pdo->query("SELECT * FROM annonce ORDER BY id DESC");
+    return $response->fetchAll();
+}
+
+function deleteNews(PDO $pdo, $title) {
+    $stmt = $pdo->prepare("DELETE FROM annonce WHERE titre = :title");
+    $stmt->bindParam(':title', $title);
+    $stmt->execute();
+//    $stmt->execute(
+//        [
+//            ":titre" => $title
+//        ]
+//    );
+    return $stmt->rowCount();
 }
