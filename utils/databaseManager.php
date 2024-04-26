@@ -18,6 +18,13 @@ function getAllNews(PDO $pdo) {
     return $response->fetchAll();
 }
 
+function getOneNews(PDO $pdo, $title) {
+    $stmt = $pdo->prepare("SELECT * FROM annonce WHERE titre = :title LIMIT 1");
+    $stmt->bindValue(":title", $title);
+    $stmt->execute();
+    return $stmt->fetch();
+}
+
 function deleteNews(PDO $pdo, $title) {
     $stmt = $pdo->prepare("DELETE FROM annonce WHERE titre = :title");
     $stmt->bindParam(':title', $title);
@@ -44,3 +51,7 @@ function addNews(PDO $pdo, $title, $author, $content, $imageUrl) {
 
     return $stmt->rowCount();
 }
+
+//function updateNews(PDO $pdo, $id, $title, $author, $content, $imageUrl) {
+//    $stmt = $pdo->prepare("UPDATE annonce");
+//}

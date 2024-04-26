@@ -49,11 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
         echo ("<p class='text-danger text-center'>Le titre de la nouvelle ne peut pas être vide.</p>");
     }
 }
+
+//Traitement modification d'un article
+
 ?>
 
     <h1 class="text-center m-3"><?=$title?></h1>
 <a href="http://localhost:8888/dauphine/logout.php" class="btn btn-danger" style="position: fixed; top: 10px; right: 10px; z-index: 1500;">Déconnexion</a>
-
+<!--    Formulaire d'ajout d'un article sur le site-->
     <h2 class="text-muted m-1 ms-5">Publier l'article</h2>
     <div class="d-flex flex-column justify-content-center ms-5">
         <form class="text-center p-1 col-6" method="POST" action="index.php">
@@ -73,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
                 <input type="text" class="form-control m-1" name="text" id="text" placeholder="text" style="height: 300px">
                 <label for="text">Texte</label>
             </div>
-            <input type="submit" class="btn btn-secondary m-1 col-6" value="Publier">
+            <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Publier">
             <?php
             if (isset($errors["global"])) {
                 echo ("<p class='text-danger'>" .
@@ -83,14 +86,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
         </form>
     </div>
 
+<!--    Formulaire de suppression d'un article du site-->
     <h2 class="text-muted m-1 ms-5">Supprimer l'article (par titre)</h2>
     <div class="d-flex flex-column justify-content-center ms-5">
         <form class="text-center p-1 col-6" method="POST" action="index.php">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">
-                <label for="deleteByTitle">Titre</label>
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text" id="deleteByTitle">Titre : </span>
+                    <input type="text" class="form-control" id="deleteByTitle" name="deleteByTitle" aria-describedby="deleteByTitle basic-addon4">
+                </div>
+                <div class="form-text" id="basic-addon4">Saisissez le titre de l'article que vous souhaitez supprimer.</div>
             </div>
-            <input type="submit" class="btn btn-secondary m-1 col-6" value="Supprimer">
+<!--            <div class="form-floating mb-3">-->
+<!--                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">-->
+<!--                <label for="deleteByTitle">Titre</label>-->
+<!--            </div>-->
+            <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Supprimer">
             <?php
             if (isset($errors["global"])) {
                 echo ("<p class='text-danger'>" .
@@ -100,9 +111,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
         </form>
     </div>
 
+<!--    Lien vers le formulaire de modification d'article -->
     <h2 class="text-muted m-1 ms-5">Modifier l'article</h2>
-
-
+    <div class="d-flex flex-column justify-content-center ms-5">
+        <form class="text-center p-1 col-6" method="GET" action="edit.php">
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text" id="editByTitle">Titre : </span>
+                    <input type="text" class="form-control" name="editByTitle" id="editByTitle" aria-describedby="editByTitle basic-addon4">
+                </div>
+                <div class="form-text" id="basic-addon4">Saisissez le titre de l'article que vous souhaitez modifier.</div>
+            </div>
+            <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Modifier">
+        </form>
+    </div>
 
 <?php
 include_once("../block/footer.php");
