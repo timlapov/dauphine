@@ -2,7 +2,7 @@
 require_once("utils/databaseManager.php");
 include_once(__DIR__ . "/block/header.php");
 include_once(__DIR__ . "/block/navbar.php");
-$title = "Bienvenue sur notre site d'actualités";
+$pageName = "Bienvenue sur notre site d'actualités";
 
 try {
     $pdo = connectDB();
@@ -15,7 +15,7 @@ try {
 $news = getAllNews($pdo);
 ?>
 
-<h1 class="text-center m-3"><?=$title?></h1>
+<h1 class="text-center m-3"><?=$pageName?></h1>
 
 <!--<div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">-->
 <div class="d-flex flex-column justify-content-center align-items-center">

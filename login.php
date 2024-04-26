@@ -2,7 +2,7 @@
 require_once (__DIR__ ."/utils/databaseManager.php");
 include_once(__DIR__ . "/block/header.php");
 include_once(__DIR__ . "/block/navbar.php");
-$title = "Login";
+$pageName = "Login";
 
 $errors = [];
 if (
@@ -34,7 +34,7 @@ if (
 }
 ?>
 
-    <h1 class="text-center m-3"><?=$title?></h1>
+    <h1 class="text-center m-3"><?=$pageName?></h1>
     <div class="d-flex flex-column justify-content-center align-items-center">
     <form class="text-center p-5 col-5" method="POST" action="login.php">
         <div class="form-floating mb-3">

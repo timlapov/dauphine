@@ -29,3 +29,18 @@ function deleteNews(PDO $pdo, $title) {
 //    );
     return $stmt->rowCount();
 }
+
+function addNews(PDO $pdo, $title, $author, $content, $imageUrl) {
+    $stmt = $pdo->prepare("INSERT INTO annonce 
+    (imageUrl, contenu, titre, auteur, datePublication)
+    VALUES (:imageUrl, :contenu, :titre, :auteur, :datePublication)");
+    $datePublication = date('Y-m-d H:i:s');
+    $stmt->bindParam(':imageUrl', $imageUrl);
+    $stmt->bindParam(':contenu', $content);
+    $stmt->bindParam(':titre', $title);
+    $stmt->bindParam(':auteur', $author);
+    $stmt->bindParam(':datePublication', $datePublication);
+    $stmt->execute();
+
+    return $stmt->rowCount();
+}

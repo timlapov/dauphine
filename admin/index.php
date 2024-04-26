@@ -16,13 +16,32 @@ try {
     echo $e->getMessage();
     exit;
 }
+
+//Traitement de l'ajout d'un article
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["text"]) && isset($_POST["imageUrl"])) {
+    $title = htmlspecialchars($_POST["title"]);
+    $author = htmlspecialchars($_POST["author"]);
+    $text = htmlspecialchars($_POST["text"]);
+    $imageUrl = htmlspecialchars($_POST["imageUrl"]);
+
+    if (!empty(trim($title)) && !empty(trim($author)) && !empty(trim($text)) && !empty(trim($imageUrl))) {
+        $addedNews = addNews($pdo, $title, $author, $text, $imageUrl);
+        if ($addedNews == 1) {
+            echo ("<p class='text-success text-center'>L'information a été ajouté avec succès.</p>");
+        }
+    } else {
+        echo ("<p class='text-danger text-center'>Remplir tous les champs pour ajouter un article !</p>");
+    }
+
+}
+
 //Traitement suppression d'un article
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
     $newsToDelete = $_POST["deleteByTitle"];
     if (!empty($newsToDelete)) {
         $deletedRows = deleteNews($pdo, $newsToDelete);
         if ($deletedRows > 0) {
-            echo ("<p class='text-success text-center'>L'information a été supprimée avec succès. {$deletedRows} articles supprimés au total</p>");
+            echo ("<p class='text-success text-center'>L'information a été supprimée avec succès. $deletedRows articles supprimés au total</p>");
         } else {
             echo ("<p class='text-danger text-center'>Je n'ai pas trouvé d'article avec ce titre.</p>");
         }
@@ -39,16 +58,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
     <div class="d-flex flex-column justify-content-center ms-5">
         <form class="text-center p-1 col-6" method="POST" action="index.php">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control m-1" name="titre" id="titre" placeholder="titre">
-                <label for="titre">Titre</label>
+                <input type="text" class="form-control m-1" name="title" id="title" placeholder="title">
+                <label for="title">Titre</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control m-1" name="auteur" id="auteur" placeholder="auteur">
-                <label for="auteur">Auteur</label>
+                <input type="text" class="form-control m-1" name="author" id="author" placeholder="author">
+                <label for="author">Auteur</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control m-1" name="auteur" id="auteur" placeholder="auteur" style="height: 300px">
-                <label for="auteur">Texte</label>
+                <input type="text" class="form-control m-1" name="imageUrl" id="imageUrl" placeholder="imageUrl">
+                <label for="imageUrl">Lien vers l'image</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control m-1" name="text" id="text" placeholder="text" style="height: 300px">
+                <label for="text">Texte</label>
             </div>
             <input type="submit" class="btn btn-secondary m-1 col-6" value="Publier">
             <?php
@@ -60,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
         </form>
     </div>
 
-    <h2 class="text-muted m-1 ms-5">Supprimer l'article</h2>
+    <h2 class="text-muted m-1 ms-5">Supprimer l'article (par titre)</h2>
     <div class="d-flex flex-column justify-content-center ms-5">
         <form class="text-center p-1 col-6" method="POST" action="index.php">
             <div class="form-floating mb-3">
@@ -78,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
     </div>
 
     <h2 class="text-muted m-1 ms-5">Modifier l'article</h2>
+
+
 
 <?php
 include_once("../block/footer.php");
