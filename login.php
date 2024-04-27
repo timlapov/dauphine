@@ -3,8 +3,9 @@ require_once (__DIR__ ."/utils/databaseManager.php");
 include_once(__DIR__ . "/block/header.php");
 include_once(__DIR__ . "/block/navbar.php");
 $pageName = "Login";
-
 $errors = [];
+
+//Validation de la présence et de la validité de l'identifiant et du mot de passe
 if (
     $_SERVER["REQUEST_METHOD"] === "POST" &&
     isset($_POST["username"], $_POST["password"])
@@ -35,6 +36,7 @@ if (
 ?>
 
     <h1 class="text-center m-3"><?=$pageName?></h1>
+<!--Formulaire d'authentification-->
     <div class="d-flex flex-column justify-content-center align-items-center">
     <form class="text-center p-5 col-5" method="POST" action="login.php">
         <div class="form-floating mb-3">
@@ -54,7 +56,6 @@ if (
         ?>
     </form>
     </div>
-
 
 <?php
 include_once(__DIR__ . "/block/footer.php");

@@ -14,7 +14,7 @@ try {
     exit;
 }
 
-//Traitement de la modofocation d'un article
+//Traitement de la modifocation d'un article
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["content"]) && isset($_POST["imageUrl"]) && isset($_POST["articleId"])) {
     $title = htmlspecialchars($_POST["title"]);
     $author = htmlspecialchars($_POST["author"]);
@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_PO
 
 }
 
+//Obtention d'un article d'identification ou d'une démonstration d'erreur
 if (isset($_POST["articleId"])) {
     $id = $_POST["articleId"];
     $id = (int) trim($id);
@@ -48,7 +49,9 @@ if (isset($_POST["articleId"])) {
 ?>
 
     <h1 class="text-center m-3"><?=$pageName?></h1>
+
 <?php
+//Appeler le formulaire de modification d'un article s'il existe un article avec cet identifiant
 if (!empty($article)) {
     include_once "../block/editForm.php";
 } else {

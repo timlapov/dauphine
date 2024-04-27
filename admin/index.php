@@ -49,9 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteById"])) {
         echo ("<p class='text-danger text-center'>L'id de l'article ne peut pas être vide.</p>");
     }
 }
-
-//Traitement modification d'un article
-
 ?>
 
     <h1 class="text-center m-3"><?=$title?></h1>
@@ -97,10 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteById"])) {
                 </div>
                 <div class="form-text" id="basic-addon4">Saisissez le #id de l'article que vous souhaitez supprimer.</div>
             </div>
-<!--            <div class="form-floating mb-3">-->
-<!--                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">-->
-<!--                <label for="deleteByTitle">Titre</label>-->
-<!--            </div>-->
             <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Supprimer">
             <?php
             if (isset($errors["global"])) {

@@ -17,7 +17,6 @@ $news = getAllNews($pdo);
 
 <h1 class="text-center m-3"><?=$pageName?></h1>
 
-<!--<div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">-->
 <div class="d-flex flex-column justify-content-center align-items-center">
     <?php foreach ($news as $newsItem) { ?>
 <div class="card m-3 col-6">
