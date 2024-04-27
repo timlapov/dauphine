@@ -36,17 +36,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_PO
 }
 
 //Traitement suppression d'un article
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
-    $newsToDelete = $_POST["deleteByTitle"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteById"])) {
+    $newsToDelete = $_POST["deleteById"];
     if (!empty($newsToDelete)) {
         $deletedRows = deleteNews($pdo, $newsToDelete);
         if ($deletedRows > 0) {
             echo ("<p class='text-success text-center'>L'information a été supprimée avec succès. $deletedRows articles supprimés au total</p>");
         } else {
-            echo ("<p class='text-danger text-center'>Je n'ai pas trouvé d'article avec ce titre.</p>");
+            echo ("<p class='text-danger text-center'>Je n'ai pas trouvé d'article avec cet id.</p>");
         }
     } else {
-        echo ("<p class='text-danger text-center'>Le titre de la nouvelle ne peut pas être vide.</p>");
+        echo ("<p class='text-danger text-center'>L'id de l'article ne peut pas être vide.</p>");
     }
 }
 
@@ -87,15 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
     </div>
 
 <!--    Formulaire de suppression d'un article du site-->
-    <h2 class="text-muted m-1 ms-5">Supprimer l'article (par titre)</h2>
+    <h2 class="text-muted m-1 ms-5">Supprimer l'article (par #id)</h2>
     <div class="d-flex flex-column justify-content-center ms-5">
         <form class="text-center p-1 col-6" method="POST" action="index.php">
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text" id="deleteByTitle">Titre : </span>
-                    <input type="text" class="form-control" id="deleteByTitle" name="deleteByTitle" aria-describedby="deleteByTitle basic-addon4">
+                    <span class="input-group-text" id="deleteById">#</span>
+                    <input type="text" class="form-control" id="deleteById" name="deleteById" aria-describedby="deleteById basic-addon4">
                 </div>
-                <div class="form-text" id="basic-addon4">Saisissez le titre de l'article que vous souhaitez supprimer.</div>
+                <div class="form-text" id="basic-addon4">Saisissez le #id de l'article que vous souhaitez supprimer.</div>
             </div>
 <!--            <div class="form-floating mb-3">-->
 <!--                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">-->
@@ -114,13 +114,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteByTitle"])) {
 <!--    Lien vers le formulaire de modification d'article -->
     <h2 class="text-muted m-1 ms-5">Modifier l'article</h2>
     <div class="d-flex flex-column justify-content-center ms-5">
-        <form class="text-center p-1 col-6" method="GET" action="edit.php">
+        <form class="text-center p-1 col-6" method="POST" action="edit.php">
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text" id="editByTitle">Titre : </span>
-                    <input type="text" class="form-control" name="editByTitle" id="editByTitle" aria-describedby="editByTitle basic-addon4">
+                    <span class="input-group-text" id="articleId">#</span>
+                    <input type="text" class="form-control" name="articleId" id="articleId" aria-describedby="articleId basic-addon4">
                 </div>
-                <div class="form-text" id="basic-addon4">Saisissez le titre de l'article que vous souhaitez modifier.</div>
+                <div class="form-text" id="basic-addon4">Saisissez # id de l'article que vous souhaitez modifier.</div>
             </div>
             <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Modifier">
         </form>

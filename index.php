@@ -25,7 +25,7 @@ $news = getAllNews($pdo);
     <div class="card-body">
         <h5 class="card-title"><?=$newsItem['titre']?></h5>
         <p class="card-text"><?=$newsItem['contenu']?></p>
-        <p class="card-text"><small class="text-body-secondary"><?=$newsItem['datePublication']?> par <?=$newsItem['auteur']?></small></p>
+        <p class="card-text"><small class="text-body-secondary"><?=$newsItem['datePublication']?> par <?=$newsItem['auteur']?> # <?=$newsItem['id']?></small></p>
     </div>
 </div>
     <?php

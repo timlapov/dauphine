@@ -18,16 +18,16 @@ function getAllNews(PDO $pdo) {
     return $response->fetchAll();
 }
 
-function getOneNews(PDO $pdo, $title) {
-    $stmt = $pdo->prepare("SELECT * FROM annonce WHERE titre = :title LIMIT 1");
-    $stmt->bindValue(":title", $title);
+function getOneNews(PDO $pdo, $id) {
+    $stmt = $pdo->prepare("SELECT * FROM annonce WHERE id = :id");
+    $stmt->bindValue(":id", $id);
     $stmt->execute();
     return $stmt->fetch();
 }
 
-function deleteNews(PDO $pdo, $title) {
-    $stmt = $pdo->prepare("DELETE FROM annonce WHERE titre = :title");
-    $stmt->bindParam(':title', $title);
+function deleteNews(PDO $pdo, $id) {
+    $stmt = $pdo->prepare("DELETE FROM annonce WHERE id = :id");
+    $stmt->bindParam(':id', $id);
     $stmt->execute();
 //    $stmt->execute(
 //        [
@@ -52,6 +52,17 @@ function addNews(PDO $pdo, $title, $author, $content, $imageUrl) {
     return $stmt->rowCount();
 }
 
-//function updateNews(PDO $pdo, $id, $title, $author, $content, $imageUrl) {
-//    $stmt = $pdo->prepare("UPDATE annonce");
-//}
+function updateNews(PDO $pdo, $id, $title, $author, $content, $imageUrl) {
+    $stmt = $pdo->prepare("UPDATE annonce 
+                                 SET imageUrl = :imageUrl, contenu = :contenu, titre = :titre, auteur = :auteur, datePublication = :datePublication
+                                 WHERE id = :id");
+    $datePublication = date('Y-m-d H:i:s');
+    $stmt->bindParam(':imageUrl', $imageUrl);
+    $stmt->bindParam(':contenu', $content);
+    $stmt->bindParam(':titre', $title);
+    $stmt->bindParam(':auteur', $author);
+    $stmt->bindParam(':datePublication', $datePublication);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->rowCount();
+}

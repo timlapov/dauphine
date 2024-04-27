@@ -14,39 +14,52 @@ try {
     exit;
 }
 
-if (isset($_GET["editByTitle"])) {
-    $title = $_GET["editByTitle"];
-    if (!empty(trim($title))) {
-        $article = getOneNews($pdo, $title);
+//Traitement de la modofocation d'un article
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["content"]) && isset($_POST["imageUrl"]) && isset($_POST["articleId"])) {
+    $title = htmlspecialchars($_POST["title"]);
+    $author = htmlspecialchars($_POST["author"]);
+    $content = htmlspecialchars($_POST["content"]);
+    $imageUrl = htmlspecialchars($_POST["imageUrl"]);
+    $id = (int) $_POST["articleId"];
+
+    if (!empty(trim($title)) && !empty(trim($author)) && !empty(trim($content)) && !empty(trim($imageUrl))) {
+        $updatedNews = updateNews($pdo, $id, $title, $author, $content, $imageUrl);
+        if ($updatedNews == 1) {
+            echo ("<p class='text-success text-center'>L'information a été modifié avec succès.</p>");
+        }
+    } else {
+        echo ("<p class='text-danger text-center'>Remplir tous les champs pour modifier un article !</p>");
     }
-    if (empty($article)) {
-        echo ("<p class='text-danger text-center'>Il n'y a pas d'article avec ce titre !</p>");
+
+}
+
+if (isset($_POST["articleId"])) {
+    $id = $_POST["articleId"];
+    $id = (int) trim($id);
+    if (!empty($id)) {
+        $article = getOneNews($pdo, $id);
+        if (empty($article)) {
+            echo ("<p class='text-danger text-center'>Il n'y a pas d'article avec cet id !</p>");
+        }
+    } else {
+        echo ("<p class='text-danger text-center'>Le champ ne peut pas être vide !</p>");
     }
 }
 ?>
 
     <h1 class="text-center m-3"><?=$pageName?></h1>
-<form class="text-center p-1 col-6" method="POST" action="edit.php">
-    <div class="mb-3">
-        <div class="input-group">
-            <span class="input-group-text" id="deleteByTitle">Titre : </span>
-            <input type="text" class="form-control" id="deleteByTitle" name="deleteByTitle" aria-describedby="deleteByTitle basic-addon4">
-        </div>
-        <div class="form-text" id="basic-addon4">Saisissez le titre de l'article que vous souhaitez supprimer.</div>
-    </div>
-    <!--            <div class="form-floating mb-3">-->
-    <!--                <input type="text" class="form-control m-1" name="deleteByTitle" id="deleteByTitle" placeholder="deleteByTitle">-->
-    <!--                <label for="deleteByTitle">Titre</label>-->
-    <!--            </div>-->
-    <input type="submit" class="btn btn-secondary m-1 mb-3 col-6" value="Supprimer">
-
-</form>
-
-<div class="m-3 text-center">
-<a href="index.php" class="btn btn-danger">Accéder à la page d'administration</a>
-</div>
 <?php
-//var_dump($_GET);
-//var_dump($article);
+if (!empty($article)) {
+    include_once "../block/editForm.php";
+} else {
+    echo ('
+               <div class="m-3 text-center col-12">
+        <a href="index.php" class="btn btn-danger">Accéder à la page d\'administration</a>
+    </div> 
+    ');
+}
+?>
+
+<?php
 include_once("../block/footer.php");
 ?>
