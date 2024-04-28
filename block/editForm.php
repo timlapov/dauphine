@@ -1,5 +1,5 @@
 <div class="d-flex flex-column justify-content-center align-items-center ms-5">
-    <form class="text-center p-1 col-6" method="POST" action="edit.php">
+    <form class="text-center p-1 col-6" method="POST" action="edit.php" enctype="multipart/form-data">
         <div class="row">
             <div class="col-2 mb-3">
                 <label for="articleId" class="form-label">#id</label>
@@ -15,8 +15,9 @@
             <input type="text" class="form-control" id="author" name="author" placeholder="-" value="<?=$article['auteur']?>">
         </div>
         <div class="mb-3">
-            <label for="imageUrl" class="form-label">Image (URL)</label>
-            <input type="text" class="form-control" id="imageUrl" name="imageUrl" placeholder="-" value="<?=$article['imageUrl']?>">
+            <label for="imageUrl" class="form-label">Image</label>
+            <input type="file" class="form-control" id="imageUrl" name="imageUrl" placeholder="-" accept="image/*">
+            <input type="hidden" name="currentImageUrl" value="<?=$article['imageUrl']?>">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Contenu</label>

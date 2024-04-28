@@ -1,11 +1,14 @@
 <?php
+session_start();
+if (!isset($_SESSION["username"])) {
+    header("Location: http://localhost:8888/dauphine/index.php");
+}
 require_once ("../utils/databaseManager.php");
 include_once("../block/header.php");
 include_once("../block/navbar.php");
 $pageName = "Modification de l'article";
 
 $errors = [];
-
 try {
     $pdo = connectDB();
     configPdo($pdo);
@@ -13,15 +16,31 @@ try {
     echo $e->getMessage();
     exit;
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["imageUrl"])) {
+    $file = $_FILES["imageUrl"];
+    // Vérification des erreurs de téléchargement
+    if ($file['error'] == UPLOAD_ERR_OK) {
+        // Création d'un chemin d'accès pour l'enregistrement d'un fichier
+        $uploadDir = "../img/";
+        $uploadFile = $uploadDir . time() . '_' . basename($file["name"]);
 
-//Traitement de la modifocation d'un article
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["content"]) && isset($_POST["imageUrl"]) && isset($_POST["articleId"])) {
+        // Tentative d'enregistrement d'un fichier sur le serveur
+        if (move_uploaded_file($file["tmp_name"], $uploadFile)) {
+            echo "<p class='text-success text-center'>Le fichier a été téléchargé avec succès.</p>";
+            $newImageUrl = substr($uploadFile, 3);
+        } else {
+            echo "<p class='text-danger text-center'>Échec du téléchargement du fichier.</p>";
+        }
+    }
+}
+
+//Traitement de la modification d'un article
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["content"]) && isset($_POST["articleId"]) && (isset($newImageUrl) || isset($_POST["currentImageUrl"]))) {
     $title = htmlspecialchars($_POST["title"]);
     $author = htmlspecialchars($_POST["author"]);
     $content = htmlspecialchars($_POST["content"]);
-    $imageUrl = htmlspecialchars($_POST["imageUrl"]);
+    $imageUrl = empty($newImageUrl) ? htmlspecialchars($_POST["currentImageUrl"]) : $newImageUrl;
     $id = (int) $_POST["articleId"];
-
     if (!empty(trim($title)) && !empty(trim($author)) && !empty(trim($content)) && !empty(trim($imageUrl))) {
         $updatedNews = updateNews($pdo, $id, $title, $author, $content, $imageUrl);
         if ($updatedNews == 1) {
